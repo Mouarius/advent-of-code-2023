@@ -1,3 +1,5 @@
+from functools import reduce
+
 with open("./day-2/input.txt") as file:
     data = file.readlines()
 
@@ -40,7 +42,7 @@ def is_game_possible(
     return True
 
 
-def get_result(initial_cubes, lines):
+def get_part_one_result(initial_cubes, lines):
     total = 0
     for line in lines:
         game = parse_game_information(line)
@@ -48,4 +50,19 @@ def get_result(initial_cubes, lines):
     return total
 
 
-print(get_result(initial_cubes, data))
+def get_max_colors(round_list:list[tuple[int]]) -> tuple[int]:
+
+    max_red = max([round_value[0] for round_value in round_list])
+    max_green = max([round_value[1] for round_value in round_list])
+    max_blue = max([round_value[2] for round_value in round_list])
+
+    return (max_red, max_green, max_blue)
+
+def get_part_two_result(lines):
+    total = 0
+    for line in lines:
+        game = parse_game_information(line)
+        total += reduce(lambda x,y: x*y, get_max_colors(game[1]))
+    return total
+
+print(get_part_two_result(data))
